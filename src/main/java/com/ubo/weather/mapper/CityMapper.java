@@ -4,6 +4,9 @@ import com.ubo.weather.entity.CityEntity;
 import dto.weatherapi.City;
 import dto.weatherapi.CityCoordinate;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class CityMapper {
 
   public static City toDto(CityEntity cityEntity) {
@@ -29,5 +32,21 @@ public class CityMapper {
     cityEntity.setLon(city.getCoordinate().getLongitude());
     cityEntity.setLat(city.getCoordinate().getLatitude());
     return cityEntity;
+  }
+
+  public static List<City> toListDto(List<CityEntity> cities) {
+    List<City> citiesDto = new ArrayList<>();
+    for (CityEntity cityEntity : cities) {
+      citiesDto.add(toDto(cityEntity));
+    }
+    return citiesDto;
+  }
+
+  public static List<CityEntity> toListEntity(List<City> cities) {
+    List<CityEntity> citiesEntity = new ArrayList<>();
+    for (City city : cities) {
+      citiesEntity.add(toEntity(city));
+    }
+    return citiesEntity;
   }
 }

@@ -6,6 +6,9 @@ import com.ubo.weather.repository.CityRepository;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Named
 public class CityBusiness {
 
@@ -14,5 +17,9 @@ public class CityBusiness {
 
   public void createCity(CityEntity city) {
     cityRepository.createCity(CityMapper.toDto(city));
+  }
+
+  public List<CityEntity> getAllCities() {
+    return CityMapper.toListEntity(cityRepository.getAllCities());
   }
 }
