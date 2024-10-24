@@ -1,9 +1,12 @@
 package com.ubo.weather.repository;
 
+import com.ubo.weather.entity.CityEntity;
 import dto.weatherapi.City;
 import dto.weatherapi.CityCoordinate;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 import java.util.HashMap;
@@ -15,6 +18,11 @@ public class CityRepository {
   private static final String SQL_INSERT_CITY = "INSERT INTO city (ID,NAME,ZIPCODE,REGION,COUNTRY,LONGITUDE,LATITUDE) VALUES " +
           "(:id,:name,:zipcode,:region,:country,:longitude,:latitude)";
   private static final String SQL_SELECT_CITIES = "SELECT * FROM city";
+  private static final String SQL_SELECT_CITY_BY_NAME = "SELECT * FROM city WHERE NAME in :name";
+  private static final String SQL_SELECT_CITY_BY_ID = "SELECT * FROM city WHERE ID=:id";
+  private static final String SQL_UPDATE_CITY = "UPDATE city SET NAME=:name, ZIPCODE=:zipcode, REGION=:region, COUNTRY=:country, LONGITUDE=:longitude, LATITUDE=:latitude WHERE ID=:id";
+  private static final String SQL_DELETE_CITY = "DELETE FROM city WHERE ID=:id";
+
   @Inject
   private NamedParameterJdbcTemplate jdbcTemplate;
 
@@ -46,5 +54,45 @@ public class CityRepository {
       city.setCoordinate(coordinate);
       return city;
     }).toList();
+  }
+
+  public City getCityByListName(List<String> name) {
+    HashMap<String, Object> map = new HashMap<>();
+    map.put("name",name);
+
+    return jdbcTemplate.queryForObject(
+            SQL_SELECT_CITY_BY_NAME,
+            map,
+            BeanPropertyRowMapper.newInstance(City.class));
+  }
+
+  public void updateCity(City dto) {
+    HashMap<String, Object> map = new HashMap<>();
+    map.put("id",dto.getId());
+    map.put("name",dto.getName());
+    map.put("zipCode",dto.getZipCode());
+    map.put("region",dto.getRegion());
+    map.put("country",dto.getCountry());
+    map.put("longitude",dto.getCoordinate().getLongitude());
+    map.put("latitude",dto.getCoordinate().getLatitude());
+
+    jdbcTemplate.update(SQL_UPDATE_CITY,map);
+  }
+
+  public void deleteCityById(Long id) {
+    HashMap<String, Object> map = new HashMap<>();
+    map.put("id",id);
+
+    jdbcTemplate.update(SQL_DELETE_CITY, map);
+  }
+
+  public City getCityById(Long id) {
+    HashMap<String, Object> map = new HashMap<>();
+    map.put("id",id);
+
+    return jdbcTemplate.queryForObject(
+            SQL_SELECT_CITY_BY_ID,
+            map,
+            BeanPropertyRowMapper.newInstance(City.class));
   }
 }

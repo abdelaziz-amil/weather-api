@@ -10,6 +10,7 @@ import java.util.List;
 public class CityMapper {
 
   public static City toDto(CityEntity cityEntity) {
+    if (cityEntity == null) return null;
     City cityDto = new City();
     CityCoordinate cityCoordinate = new CityCoordinate();
     cityCoordinate.setLatitude(cityEntity.getLat());
@@ -23,6 +24,7 @@ public class CityMapper {
   }
 
   public static CityEntity toEntity(City city) {
+    if (city == null) return null;
     CityEntity cityEntity = new CityEntity();
     cityEntity.setCountry(city.getCountry());
     cityEntity.setId(city.getId());
@@ -43,6 +45,7 @@ public class CityMapper {
   }
 
   public static List<CityEntity> toListEntity(List<City> cities) {
+    if (cities == null || cities.isEmpty()) return null;
     List<CityEntity> citiesEntity = new ArrayList<>();
     for (City city : cities) {
       citiesEntity.add(toEntity(city));
