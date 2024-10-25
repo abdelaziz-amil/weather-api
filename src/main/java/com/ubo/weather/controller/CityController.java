@@ -10,8 +10,11 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @Path("/city")
@@ -41,14 +44,29 @@ public class CityController {
   @GET
   @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
-  public Response getCityByListName(@PathParam("names") List<String> names, @PathParam("ids") List<String> ids) {
-    return Response.ok(CityMapper.toDto(cityBusiness.getCityByListName(names))).build();
+  public Response getCityByListName(@QueryParam("list-name") List<String> listNames, @QueryParam("list-id") List<String> listId) {
+    List<City> response;
+    if (listId != null) {
+      response = cityBusiness.getListCityById(listId)
+              .stream()
+              .map(CityMapper::toDto)
+              .collect(Collectors.toList());
+    } else if (!listNames.isEmpty()) {
+      response = cityBusiness.getListCityByName(listNames)
+              .stream()
+              .map(CityMapper::toDto)
+              .collect(Collectors.toList());
+    } else {
+      response = Collections.emptyList();
+    }
+
+    return Response.ok(response).build();
   }
 
   @PUT
   @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
-  public Response updateCity(City city) {
+  public Response updateCity(@QueryParam("City") City city) {
     try {
       cityBusiness.updateCity(CityMapper.toEntity(city));
       return Response.ok(city).build();
@@ -60,6 +78,7 @@ public class CityController {
   @DELETE
   @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
+  @RequestMapping("/{id}")
   public Response deleteCityById(@PathParam("id") Long id) throws CityDoesntExistException {
     City city = CityMapper.toDto(cityBusiness.deleteCityById(id));
     return Response.ok(city).build();

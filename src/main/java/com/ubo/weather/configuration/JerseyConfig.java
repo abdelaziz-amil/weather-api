@@ -12,5 +12,7 @@ public class JerseyConfig extends ResourceConfig {
 
   public JerseyConfig() {
     packages("com.ubo.weather.controller");
+    packages("com.ubo.weather.exception");
+    packages("com.ubo.weather.filtres");
   }
 }

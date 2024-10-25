@@ -1,11 +1,9 @@
 package com.ubo.weather.repository;
 
-import com.ubo.weather.entity.CityEntity;
 import dto.weatherapi.City;
 import dto.weatherapi.CityCoordinate;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
@@ -18,10 +16,15 @@ public class CityRepository {
   private static final String SQL_INSERT_CITY = "INSERT INTO city (ID,NAME,ZIPCODE,REGION,COUNTRY,LONGITUDE,LATITUDE) VALUES " +
           "(:id,:name,:zipcode,:region,:country,:longitude,:latitude)";
   private static final String SQL_SELECT_CITIES = "SELECT * FROM city";
-  private static final String SQL_SELECT_CITY_BY_NAME = "SELECT * FROM city WHERE NAME in :name";
+  private static final String SQL_SELECT_CITY_BY_NAME = "SELECT " +
+          "ID,NAME,ZIPCODE,REGION,COUNTRY,LONGITUDE,LATITUDE" +
+          " FROM city WHERE NAME in (:names)";
   private static final String SQL_SELECT_CITY_BY_ID = "SELECT * FROM city WHERE ID=:id";
   private static final String SQL_UPDATE_CITY = "UPDATE city SET NAME=:name, ZIPCODE=:zipcode, REGION=:region, COUNTRY=:country, LONGITUDE=:longitude, LATITUDE=:latitude WHERE ID=:id";
   private static final String SQL_DELETE_CITY = "DELETE FROM city WHERE ID=:id";
+  private static final String SQL_GET_CITIES_BY_ID = "SELECT " +
+          "ID,NAME,ZIPCODE,REGION,COUNTRY,LONGITUDE,LATITUDE" +
+          " FROM city WHERE ID in (:ids)";
 
   @Inject
   private NamedParameterJdbcTemplate jdbcTemplate;
@@ -94,5 +97,45 @@ public class CityRepository {
             SQL_SELECT_CITY_BY_ID,
             map,
             BeanPropertyRowMapper.newInstance(City.class));
+  }
+
+  public List<City> getCitiesByName(List<String> names) {
+    HashMap<String, Object> map = new HashMap<>();
+    map.put("names",names);
+
+    List<City> cities = jdbcTemplate.query(SQL_SELECT_CITY_BY_NAME, map, (r, s) ->{
+      City city = new City();
+      city.setName(r.getString("NAME"));
+      city.setName(r.getString("COUNTRY"));
+      city.setRegion(r.getString("REGION"));
+      city.setId(r.getString("ID"));
+      CityCoordinate coordinate = new CityCoordinate();
+      coordinate.setLatitude(r.getInt("LATITUDE"));
+      coordinate.setLongitude(r.getInt("LONGITUDE"));
+      city.setCoordinate(coordinate);
+      return city;
+    });
+
+    return cities;
+  }
+
+  public List<City> getCitiesById(List<String> ids) {
+    HashMap<String, Object> map = new HashMap<>();
+    map.put("names",ids);
+
+    List<City> cities = jdbcTemplate.query(SQL_SELECT_CITY_BY_ID, map, (r, s) ->{
+      City city = new City();
+      city.setName(r.getString("NAME"));
+      city.setName(r.getString("COUNTRY"));
+      city.setRegion(r.getString("REGION"));
+      city.setId(r.getString("ID"));
+      CityCoordinate coordinate = new CityCoordinate();
+      coordinate.setLatitude(r.getInt("LATITUDE"));
+      coordinate.setLongitude(r.getInt("LONGITUDE"));
+      city.setCoordinate(coordinate);
+      return city;
+    });
+
+    return cities;
   }
 }
