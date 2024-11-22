@@ -11,3 +11,7 @@ spring:
     database-platform: org.hibernate.dialect.H2Dialect
   h2:
     console.enabled: true
+api:
+  rest:
+    open-weather:
+      token: f5a1faeae691dac71a8bcb8ae8263c04

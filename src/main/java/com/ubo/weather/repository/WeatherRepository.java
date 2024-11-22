@@ -11,7 +11,7 @@ public class WeatherRepository {
   @Inject
   private OpenWeatherClient openWeatherClient;
 
-  public Model200 getWeatherCityByName(String cityName, String token) {
-    return openWeatherClient.getWeather(cityName, token);
+  public Model200 getWeatherCityByName(String cityName) {
+    return openWeatherClient.getWeather(cityName);
   }
 }

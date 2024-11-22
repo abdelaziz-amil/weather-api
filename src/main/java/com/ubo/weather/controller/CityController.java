@@ -63,17 +63,17 @@ public class CityController {
     return Response.ok(response).build();
   }
 
-  @PUT
-  @Consumes(MediaType.APPLICATION_JSON)
-  @Produces(MediaType.APPLICATION_JSON)
-  public Response updateCity(@QueryParam("City") City city) {
-    try {
-      cityBusiness.updateCity(CityMapper.toEntity(city));
-      return Response.ok(city).build();
-    } catch (Exception e) {
-      throw new RuntimeException("Impossible de mettre à jour les données de la ville", e);
-    }
-  }
+//  @PUT
+//  @Consumes(MediaType.APPLICATION_JSON)
+//  @Produces(MediaType.APPLICATION_JSON)
+//  public Response updateCity(@QueryParam("City") City city) {
+//    try {
+//      cityBusiness.updateCity(CityMapper.toEntity(city));
+//      return Response.ok(city).build();
+//    } catch (Exception e) {
+//      throw new RuntimeException("Impossible de mettre à jour les données de la ville", e);
+//    }
+//  }
 
   @DELETE
   @Consumes(MediaType.APPLICATION_JSON)

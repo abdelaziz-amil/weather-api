@@ -6,6 +6,6 @@ import feign.RequestLine;
 
 public interface OpenWeatherClient {
 
-  @RequestLine("GET /weather?q={cityName}&appid={token}")
-  Model200 getWeather(@Param("cityName") String cityName, @Param("token") String token);
+  @RequestLine("GET /weather?q={cityName}")
+  Model200 getWeather(@Param("cityName") String cityName);
 }

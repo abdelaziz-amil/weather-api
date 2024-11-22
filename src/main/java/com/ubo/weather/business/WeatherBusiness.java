@@ -12,8 +12,8 @@ public class WeatherBusiness {
   @Inject
   WeatherRepository weatherRepository;
 
-  public WeatherEntity getWeatherByCityName(String cityName, String token) {
-    return WeatherMapper.toEntity(weatherRepository.getWeatherCityByName(cityName, token));
+  public WeatherEntity getWeatherByCityName(String cityName) {
+    return WeatherMapper.toEntity(weatherRepository.getWeatherCityByName(cityName));
   }
 
 }

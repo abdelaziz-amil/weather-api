@@ -24,14 +24,14 @@ public class WeatherController {
   private CityBusiness cityBusiness;
   @GET
   @Produces(MediaType.APPLICATION_JSON)
-  public Response getWeatherByCityName(@QueryParam("cityName") String cityName, @QueryParam("apiKey") String apiKey) {
-    ArrayList<String> name = new ArrayList<>();
-    name.add(cityName);
-    var isExistingCity = cityBusiness.getListCityByName(name);
-    if (isExistingCity.isEmpty()) {
-      return Response.status(Response.Status.NOT_FOUND).build();
-    }
-    var res = WeatherMapper.toDto(weatherBusiness.getWeatherByCityName(cityName, apiKey));
+  public Response getWeatherByCityName(@QueryParam("cityName") String cityName) {
+//    ArrayList<String> name = new ArrayList<>();
+//    name.add(cityName);
+//    var isExistingCity = cityBusiness.getListCityByName(name);
+//    if (isExistingCity.isEmpty()) {
+//      return Response.status(Response.Status.NOT_FOUND).build();
+//    }
+    var res = WeatherMapper.toDto(weatherBusiness.getWeatherByCityName(cityName));
     return Response.ok(res).build();
   }
 

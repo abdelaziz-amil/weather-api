@@ -2,6 +2,7 @@ package com.ubo.weather.configuration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ubo.weather.repository.client.OpenWeatherClient;
+import com.ubo.weather.repository.client.OpenWeatherInterceptor;
 import feign.Feign;
 import feign.Logger;
 import feign.jackson.JacksonDecoder;
@@ -21,11 +22,15 @@ public class FeignConfig {
   @Inject
   private ObjectMapper objectMapper;
 
+  @Inject
+  OpenWeatherInterceptor openWeatherInterceptor;
+
   @Bean
   OpenWeatherClient getOpenWeatherClient() {
     return Feign.builder()
             .encoder(new JacksonEncoder(objectMapper))
             .decoder(new JacksonDecoder(objectMapper))
+            .requestInterceptor(openWeatherInterceptor)
             .logger(new Logger.JavaLogger(FeignConfig.class))
             .logLevel(Logger.Level.FULL)
             .client(new OkHttpClient(getOkHttpClient()))
