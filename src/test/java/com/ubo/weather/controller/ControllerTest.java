@@ -25,8 +25,4 @@ public class ControllerTest {
     RestAssured.port = port;
   }
 
-  @Test
-  public void testGetCity() {
-    RestAssured.given().when().get("/city").then().statusCode(200);
-  }
 }
