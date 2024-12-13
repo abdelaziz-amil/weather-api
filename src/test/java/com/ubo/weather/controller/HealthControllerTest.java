@@ -2,15 +2,16 @@ package com.ubo.weather.controller;
 
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.Test;
+import org.springframework.http.HttpStatus;
 
 public class HealthControllerTest extends ControllerTest {
+
 
   @Test
   public void testHealth() {
     RestAssured.given()
-      .when()
-      .get("/health")
+      .get("/check")
       .then()
-      .statusCode(200);
+      .statusCode(HttpStatus.OK.value());
   }
 }
