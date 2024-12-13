@@ -42,9 +42,8 @@ public class CityBusiness {
   }
 
   private boolean doesCityAlreadyExist(String cityName) {
-    List<CityEntity> cityEntityList = CityMapper.toListEntity(cityRepository.getCitiesByName(List.of(cityName)));
-    if (cityEntityList.isEmpty()) return false;
-    return true;
+    boolean cityEntityList = CityMapper.toListEntity(cityRepository.getCitiesByName(List.of(cityName))).isEmpty();
+    return !cityEntityList;
   }
 
   public CityEntity deleteCityById(Long id) throws CityDoesntExistException {

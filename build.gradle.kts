@@ -39,6 +39,19 @@ dependencies {
 	implementation("io.github.openfeign:feign-okhttp")
 	implementation("com.squareup.okhttp3:okhttp:4.12.0")
 	testImplementation("io.github.openfeign:feign-mock")
+
+	// circuit breaker dependencies
+	implementation("io.github.resilience4j:resilience4j-spring-boot3:2.2.0")
+	implementation("io.github.resilience4j:resilience4j-feign:2.2.0")
+
+	// redis dependencies
+	implementation("org.springframework.boot:spring-boot-starter-cache:3.3.5")
+	implementation("org.springframework.boot:spring-boot-starter-data-redis:3.3.5")
+
+	testImplementation("io.github.openfeign:feign-mock")
+	testImplementation("io.rest-assured:rest-assured:5.5.0")
+	testImplementation("io.rest-assured:json-path:5.5.0")
+
 }
 
 tasks.withType<Test> {
